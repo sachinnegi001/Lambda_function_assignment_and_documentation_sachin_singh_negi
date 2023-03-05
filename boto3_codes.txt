@@ -1,0 +1,68 @@
+1-code to crete bucket 
+
+import json 
+import boto3
+def lambda_handler(event, context): 
+	client = boto3.client('s3')
+ 	response = client.create_bucket(
+		Bucket = 'bucet-name',
+                // here if you can give a perticular region
+ 		CreateBucketConfiguration = {
+			'LocationConstraint':'ap-south-1',
+		 },
+			
+		//
+
+ 		 )
+ 	print(response)
+
+
+2-code to invoke another lambda function
+
+import json
+import boto3
+
+def lambda_handler(event, context):
+    client = boto3.client("lambda")
+    
+    response = client.invoke(
+        FunctionName='batch7-lambda3',
+        Payload='{"MESSAGE": func 1"}',
+        )
+
+    print(response)
+    
+    print(event)
+    
+    return {
+        'statusCode': 200,
+        'body': 'Hello from sachin!!'
+        }
+
+
+3-code to create bucket and upload file in it same as previous file(object)--
+import boto3
+
+def lambda_handler(event, context):
+    s3_bucket = event['Records'][0]['s3']['bucket']['name']
+    s3_key = event['Records'][0]['s3']['object']['key']
+
+    s3 = boto3.resource('s3')
+    new_bucket_name = sachin-boto3-bucket1'
+    new_bucket = s3.create_bucket(Bucket=new_bucket_name)
+    
+    new_object_key = s3_key
+    new_object = s3.Object(new_bucket_name, new_object_key)
+    s3.meta.client.copy_object(
+        CopySource={'Bucket': s3_bucket, 'Key': s3_key},
+        Bucket=new_bucket_name, 
+        Key=new_object_key
+    )
+    
+    print(event)
+    
+    return {
+        'statusCode': 200,
+        'body': sachin your file was uploaded to new bucket successfully. !!'
+    }
+
